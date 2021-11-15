@@ -1,0 +1,94 @@
+
+.d-flex {
+    display: flex;
+}
+
+.align-items-center{
+    align-items: center;
+}
+
+.justify-content-center{
+    justify-content: center;
+}
+
+.flex-column{
+    flex-direction: column;
+}
+
+.flex-row{
+    flex-direction: row;
+}
+
+
+.reaction-buttons{
+    /* position: absolute; */
+    border: 1px solid #E0E0E0;
+    padding: 5px 10px;
+    border-radius: 24px;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.03);
+    top: 0;
+    transition: 300ms all ease-out;
+}
+
+
+.emoji{
+    
+    /* width: 16px;  */
+    /* margin-left: 16px; */
+    border-radius: 50%;
+    border: 0;
+    background: none;
+    transition: 300ms all ease;
+}
+
+.emoji::before,
+.emoji::after {
+    --scale : 0;
+    --arrow-size : 10px;
+    --tooltip-color : #333;
+    position: absolute;
+    top: -.25rem;
+    transform: translateX(-40%) translateY(var(--translate-y, 0)) scale(var(--scale));
+    transition: 150ms transform;
+    transform-origin: bottom center;
+
+}
+
+
+.emoji:hover::before{
+    font-size:12px;
+    /* scale: 2; */
+}
+
+.emoji:hover {
+    scale : 1.6;
+    top: 30px;
+    /* position: relative; */
+}
+
+.emoji::before {
+    
+    /* --translate-y : calc(-100% - var(--arrow-size)); */
+    --translate-y : calc(-50% - var(--arrow-size));
+    content:attr(data-tooltip);
+    padding: .5rem;
+    border-radius:.3rem;
+    width:max-content;
+    max-width: 300%;
+    text-align: center;
+    background:var(--tooltip-color);
+    color: white;
+    font-size:6px;
+
+}
+
+.emoji:hover::before,.emoji:hover::after {
+    --scale : 1;
+    transform: translateX(-30%) translateY(var(--translate-y, 0)) scale(var(--scale));
+}
+
+.emoji::after{
+    --translate-y : calc(-1 * var(--arrow-size));
+    border:var(--arrow-size) solid transparent;
+}
