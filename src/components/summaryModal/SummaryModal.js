@@ -85,32 +85,16 @@ const SummaryModal = () => {
   };
 
   return (
-    <div
-      className="modal fade"
-      id="exampleModal"
-      tabIndex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div className="modal-dialog" role="document">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title" id="exampleModalLabel">
-              Reactions
-            </h5>
-            <button
-              type="button"
-              className="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Reactions</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
             </button>
           </div>
-          <div className="modal-body">
-            <div className="">
-              <div className="d-flex"></div>
+          <div class="modal-body">
               <div className="d-flex added-reactions">
                 <span
                   className="each-added-reactions active"
@@ -154,7 +138,6 @@ const SummaryModal = () => {
                   });
                 })}
               </div>
-            </div>
           </div>
         </div>
       </div>

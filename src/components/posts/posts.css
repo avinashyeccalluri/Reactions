@@ -30,3 +30,14 @@
 
     }
 
+    
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+    .post-outer {
+        scale : 0.8;
+    }
+
+    .posts{
+        margin-top: 20px;
+    }
+}
+

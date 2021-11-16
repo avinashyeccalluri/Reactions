@@ -137,3 +137,7 @@
 .modal-dialog{
     transition: 100ms all ease-in;
 }
+
+.modal-content{
+    transition: 100ms all ease-in-out;
+}
