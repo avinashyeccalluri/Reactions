@@ -1,5 +1,5 @@
 import React from 'react'
-import image from '../../images/images1.avif'
+import image from '../../images/image3.jpg'
 import image1 from '../../images/image2.jpg'
 import Reactions from '../reactions/Reactions'
 import './posts.css'
