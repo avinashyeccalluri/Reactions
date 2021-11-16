@@ -1,5 +1,6 @@
 import React from 'react'
 import image from '../../images/images1.avif'
+import image1 from '../../images/image2.jpg'
 import Reactions from '../reactions/Reactions'
 import './posts.css'
 var posts = [
@@ -8,14 +9,14 @@ var posts = [
       first_name: "Lizette",
       last_name: "Phippen",
       email: "lphippen0@berkeley.edu",
-      avatar: "http://dummyimage.com/128x134.png/dddddd/000000",
+      avatar: image1,
     },
     {
       content_id: 2,
       first_name: "Garreth",
       last_name: "Heikkinen",
       email: "gheikkinen1@naver.com",
-      avatar: "http://dummyimage.com/147x121.png/ff4444/ffffff",
+      avatar: image1,
     },
   ];
 const Posts = () => {
