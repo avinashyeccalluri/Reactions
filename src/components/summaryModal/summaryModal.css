@@ -106,6 +106,7 @@
     margin-right: 1px;    
     border-bottom : 5px solid #E0E0E0;
     transition: 30ms all ease-in-out;
+    cursor: pointer;
 }
 
 .active {

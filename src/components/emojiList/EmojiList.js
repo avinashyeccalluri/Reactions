@@ -18,7 +18,6 @@ const EmojiList = ({setDeleteFlag, emojiReacted}) => {
             method: "DELETE",
         })
         
-        setDeleteFlag((prev)=> {return !prev})
 
       }
         await fetch(`https://artful-iudex.herokuapp.com/user_content_reactions/`, {

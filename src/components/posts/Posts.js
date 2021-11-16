@@ -23,21 +23,20 @@ const Posts = () => {
       <div id="posts" className="posts-container">
         {posts.map((post) => {
           return (
-            <>
-              <div className="post-outer">
+            <React.Fragment key={post.content_id}>
+              <div  className="post-outer">
                 <div className="avatar">
-                  <img src={post.avatar} alt="" srcset="" />
+                  <img srcSet={post.avatar} alt="" />
                 </div>
                 <div className="user-name">{post.first_name}</div>
               </div>
               <div className="posts">
-                  {/* avinash */}
-                  <img src={image} alt="failed" />
+                  <img srcSet={image} alt="" />
               </div>
               <div className="reactions">
                   <Reactions contentID ={post.content_id}></Reactions>
               </div>
-            </>
+            </React.Fragment>
           );
         })}
       </div>

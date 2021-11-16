@@ -46,7 +46,7 @@ const SummaryModal = () => {
     }
     const reactionsData = await reactionsPromise.json();
     const userPromise = await fetch(`https://artful-iudex.herokuapp.com/users`);
-    const userData = await userPromise.json();
+    const userList = await userPromise.json();
 
     var output = reactionsData.reduce((acc, data) => {
       var key = data.reaction_id;
@@ -58,7 +58,7 @@ const SummaryModal = () => {
       const [key, value] = pair;
       var reactedUsersCred = [];
       var flag = false;
-      userData.map((data, index, { length }) => {
+      userList.map((data, index, { length }) => {
         if (value.includes(data.id)) {
           reactedUsersCred = [...reactedUsersCred, data];
           flag = true;
@@ -116,7 +116,6 @@ const SummaryModal = () => {
                   className="each-added-reactions active"
                   onClick={() => showSelectedData("")}
                 >
-                  {" "}
                   All{" "}
                 </span>
                 {userData["reactionData"].map((eachReaction, index1) => {
@@ -124,7 +123,7 @@ const SummaryModal = () => {
                     <span
                       className="each-added-reactions"
                       reaction_id={eachReaction["reaction_id"]}
-                      key={index1}
+                      key={eachReaction["reaction_id"]}
                       onClick={() =>
                         showSelectedData(eachReaction["reaction_id"])
                       }
@@ -135,16 +134,16 @@ const SummaryModal = () => {
                   );
                 })}
               </div>
-              <div>
+              <div className="reacted-users-container">
                 {summaryDetails.map((data, index) => {
                   return data["users"].map((innerData, index) => {
                     return (
-                      <div
+                      <div key={data.reaction_id}
                         className="reaction-details-outer "
                         reaction_id={parseInt(data.reaction_id)}
                       >
                         <span className="reacted-users-avatar">
-                          <img src={innerData.avatar} alt="" srcset="" />
+                          <img srcSet={innerData.avatar} alt=""/>
                         </span>
                         <span className="reaction-details">
                           {icon_mapping[parseInt(data.reaction_id)]}{" "}

@@ -4,32 +4,24 @@ import SummaryModal from "../summaryModal/SummaryModal";
 import "./reaction.css";
 
 function getResult(data) {
-  return Object.fromEntries(
-    Object.entries(groupBy("content_id", data)).map(([key, value]) => [
-      key,
-      getUsersByReaction(value),
-    ])
-  );
+
+  const initialObject = data.reduce((arr, input, {index})=>{
+      const key = input.content_id;
+      const reactionID = input.reaction_id;
+    arr[key] = {...(arr[key] ?? {}), [reactionID ] : []}
+    return arr;
+
+  }, {})
+
+  return data.reduce((arr, input)=>{
+      arr[input.content_id][input.reaction_id].push(input.user_id)
+      return arr;
+  },initialObject)
 }
-
-const groupBy = (prop, arr) =>
-  arr.reduce((acc, item) => {
-    const key = item[prop];
-    acc[key] = [...(acc[key] ?? []), item];
-    return acc;
-  }, {});
-
-const getUsersByReaction = (items) => {
-  return items.reduce((acc, item) => {
-    const key = item.reaction_id;
-    acc[key] = [...(acc[key] ?? []), item.user_id];
-    return acc;
-  }, {});
-};
 
 export const UserDataContext = React.createContext();
 
-const Reaction = ({ contentID }) => {
+const Reactions = ({ contentID }) => {
   const [reactionDetails, setReactionDetails] = useState([]);
 
   const [deleteFlag, setDeleteFlag] = useState({});
@@ -146,14 +138,14 @@ const Reaction = ({ contentID }) => {
       {reactionDetails.map((eachContent, index) => {
         if (contentID == eachContent.contentID) {
           return (
-            <UserDataContext.Provider value={eachContent}>
-              <div key={index} className="reaction">
+            <UserDataContext.Provider value={eachContent} key={index}>
+              <div className="reaction">
                 {eachContent["reactionData"].map((eachReaction, index1) => {
                   return (
-                    <>
+                    <React.Fragment key={index1}>
                       <span
                         onMouseEnter={(e) => summaryTrigger(e.target)}
-                        key={index1}
+                        
                         onClick={() =>
                           deleteReaction(
                             eachReaction["users"].includes(user_id)
@@ -174,7 +166,7 @@ const Reaction = ({ contentID }) => {
                         {icon_mapping[eachReaction["reaction_id"]]}.
                         {eachReaction["users"].length}
                       </span>
-                    </>
+                    </React.Fragment>
                   );
                 })}
                 <span></span>
@@ -205,4 +197,4 @@ const Reaction = ({ contentID }) => {
   );
 };
 
-export default Reaction;
+export default Reactions;
