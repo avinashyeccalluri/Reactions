@@ -141,3 +141,14 @@
 .modal-content{
     transition: 100ms all ease-in-out;
 }
+
+.modal-backdrop {
+    /* bug fix - no overlay */    
+    display: none;    
+}
+
+.modal{
+  /* bug fix - custom overlay */   
+  background-color: rgba(10,10,10,0.45);
+  z-index: 1000;
+}

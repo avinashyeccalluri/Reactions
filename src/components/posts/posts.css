@@ -29,11 +29,18 @@
         object-fit: contain;
 
     }
+    #posts {
+        margin:20px;
+    }
 
     
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
-    .post-outer {
+    .avatar {
         scale : 0.8;
+    }
+
+    .post-outer{
+        margin : 10px 20px;
     }
 
     .posts{
