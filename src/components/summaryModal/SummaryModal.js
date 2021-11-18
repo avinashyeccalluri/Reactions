@@ -86,8 +86,7 @@ const SummaryModal = ({summaryModalHighlighter}) => {
                         summaryModalHighlighter(eachReaction["reaction_id"])
                       }
                     >
-                      {icon_mapping[eachReaction["reaction_id"]]}.
-                      {eachReaction["users"].length}
+                      {icon_mapping[eachReaction["reaction_id"]]} ∙ {eachReaction["users"].length}
                     </span>
                   );
                 })}

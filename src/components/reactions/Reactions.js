@@ -52,25 +52,23 @@ const Reactions = ({ contentID }) => {
   const summaryModalHighlighter = (reaction_id)=>{
     var a = Array.from(document.getElementsByClassName("reaction-details-outer"));
     var b = Array.from(document.getElementsByClassName("each-added-reactions"));
-    console.log("main here");
-    console.log(reaction_id);
     if(reaction_id === 0){
-      a.map(element=>{
-         element.style.display = "block";
+      a.forEach((element, index, fullArray) => {
+        element.style.display = "block";
       })
-      b.map((element, index)=>{
+
+      b.forEach((element, index, fullArray) => {
         (index === 0) ? element.classList.add('active') : element.classList.remove('active');
-      }) 
+      })
 
     }
     else{
-      a.map(element=>{
+      a.forEach((element, index, fullArray) => {
         (element.getAttribute('reaction_id') == reaction_id) ? element.style.display = "block" : element.style.display = "none";
       })
-  
-      b.map(element=>{
+      b.forEach((element, index, fullArray) => {
         (element.getAttribute('reaction_id') == reaction_id) ? element.classList.add('active') : element.classList.remove('active');
-  
+
       })
 
     }
