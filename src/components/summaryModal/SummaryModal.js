@@ -2,38 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { UserDataContext } from "../reactions/Reactions";
 import './summaryModal.css'
 
-const showSelectedData = (reaction_id) => {
-  var a = document.getElementsByClassName("reaction-details-outer");
-  var b = document.getElementsByClassName("each-added-reactions");
-  
-  for (var index = 0; index < b.length; index++) {
-    b[index].getAttribute("reaction_id") === reaction_id
-      ? b[index].classList.add("active")
-      : b[index].classList.remove("active");
-  }
-  if (reaction_id === "") {
-    for (var index = 0; index < a.length; index++) {
-      a[index].style.display = "block";
-    }
-  } else {
-    for (var index = 0; index < a.length; index++) {
-      a[index].style.display = "block";
-    }
-    for (var index = 0; index < a.length; index++) {
-      if (a[index].getAttribute("reaction_id") !== reaction_id) {
-        a[index].style.display = "none";
-      }
-    }
-  }
-};
-
-const SummaryModal = () => {
+const SummaryModal = ({summaryModalHighlighter}) => {
   const userData = useContext(UserDataContext);
 
   const [summaryDetails, setSummaryDetails] = useState([]);
 
-  const summaryTrigger = async (data, reaction_id = null) => {
-    document.querySelector("#summary-component").click();
+  const summaryTriggerer = async (data, reaction_id = null) => {
     let reactionsPromise = "";
     if (reaction_id == null) {
       reactionsPromise = await fetch(
@@ -72,7 +46,7 @@ const SummaryModal = () => {
   };
 
   useEffect(() => {
-    summaryTrigger(userData);
+    summaryTriggerer(userData);
   }, []);
 
   let icon_mapping = {
@@ -97,19 +71,19 @@ const SummaryModal = () => {
           <div class="modal-body">
               <div className="d-flex added-reactions">
                 <span
-                  className="each-added-reactions active"
-                  onClick={() => showSelectedData("")}
+                  className="each-added-reactions d-flex justify-content-center" reaction_id="0"
+                  onClick={() => summaryModalHighlighter(0)}
                 >
                   All{" "}
                 </span>
                 {userData["reactionData"].map((eachReaction, index1) => {
                   return (
                     <span
-                      className="each-added-reactions"
+                      className="each-added-reactions d-flex justify-content-center"
                       reaction_id={eachReaction["reaction_id"]}
                       key={eachReaction["reaction_id"]}
                       onClick={() =>
-                        showSelectedData(eachReaction["reaction_id"])
+                        summaryModalHighlighter(eachReaction["reaction_id"])
                       }
                     >
                       {icon_mapping[eachReaction["reaction_id"]]}.

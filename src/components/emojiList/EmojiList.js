@@ -2,40 +2,8 @@ import React, {useEffect, useState, useContext} from 'react'
 import {UserDataContext} from '../reactions/Reactions'
 import './emojiList.css'
 
-const EmojiList = ({setDeleteFlag, emojiReacted}) => {
+const EmojiList = ({setAlteredFlag, emojiReacted, addReaction}) => {
   
-    const addReaction = async (userData, reaction_id)=>{
-      var deleteExistingReaction = false;
-      var deletingReactionID = '';
-      emojiReacted.map((data)=>{
-        if(data.content_id == userData.contentID){
-          deleteExistingReaction =  true;
-          deletingReactionID = data.user_content_reactions_id;
-        }
-      })
-      if(deleteExistingReaction){
-        await fetch(`https://artful-iudex.herokuapp.com/user_content_reactions/${deletingReactionID}`, {
-            method: "DELETE",
-        })
-        
-
-      }
-        await fetch(`https://artful-iudex.herokuapp.com/user_content_reactions/`, {
-            method: "POST",
-            body: JSON.stringify({
-                user_id:parseInt(userData.userID),
-                reaction_id: parseInt(reaction_id),
-                content_id: parseInt(userData.contentID)
-            }),
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json"
-            },
-        })
-        
-        setDeleteFlag((prev)=> {return !prev})
-    
-    }
 
     const userData = useContext(UserDataContext);
 

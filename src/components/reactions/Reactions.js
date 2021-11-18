@@ -24,13 +24,11 @@ export const UserDataContext = React.createContext();
 const Reactions = ({ contentID }) => {
   const [reactionDetails, setReactionDetails] = useState([]);
 
-  const [deleteFlag, setDeleteFlag] = useState({});
-
-  const [emojiList, setEmojiList] = useState([]);
-
-  const [showSummary, setShowSummary] = useState(false);
+  const [alteredFlag, setAlteredFlag] = useState(false);
 
   const [emojiReacted, setEmojiReacted] = useState([]);
+
+  const [isCallQueued, setIsCallQueued] = useState(false)
 
   const user_id = 2;
 
@@ -50,42 +48,50 @@ const Reactions = ({ contentID }) => {
     setEmojiReacted(output);
   };
 
-  const summaryTrigger = (e) => {
+  
+  const summaryModalHighlighter = (reaction_id)=>{
+    var a = Array.from(document.getElementsByClassName("reaction-details-outer"));
+    var b = Array.from(document.getElementsByClassName("each-added-reactions"));
+    console.log("main here");
+    console.log(reaction_id);
+    if(reaction_id === 0){
+      a.map(element=>{
+         element.style.display = "block";
+      })
+      b.map((element, index)=>{
+        (index === 0) ? element.classList.add('active') : element.classList.remove('active');
+      }) 
+
+    }
+    else{
+      a.map(element=>{
+        (element.getAttribute('reaction_id') == reaction_id) ? element.style.display = "block" : element.style.display = "none";
+      })
+  
+      b.map(element=>{
+        (element.getAttribute('reaction_id') == reaction_id) ? element.classList.add('active') : element.classList.remove('active');
+  
+      })
+
+    }
+
+
+  }
+
+  const summaryTrigger = (e, reaction_id) => {
     let timeOut;
     e.addEventListener("mouseover", (e) => {
       timeOut = setTimeout(() => {
-        showSummary && document.querySelector("#summary-component").click();
-        setShowSummary(true);
+        document.querySelector("#summary-component").click();
+        summaryModalHighlighter(reaction_id)
+        clearTimeout(timeOut)
       }, 1500);
 
-      var a = document.getElementsByClassName("reaction-details-outer");
-
-      for (var index = 0; index < a.length; index++) {
-        a[index].style.display = "block";
-      }
     });
 
     e.addEventListener("mouseout", (e) => {
       clearTimeout(timeOut);
     });
-  };
-
-  const deleteReaction = async (params) => {
-    if (params === null) return;
-    const specificReactionData = await fetch(
-      `https://artful-iudex.herokuapp.com/user_content_reactions?content_id=${params.content_id}&user_id=${params.current_user_id}&reaction_id=${params.reaction_id}`
-    );
-
-    const jsonSpecificReactionData = await specificReactionData.json();
-
-    const deleteRequest = await fetch(
-      `https://artful-iudex.herokuapp.com/user_content_reactions/${jsonSpecificReactionData[0]["id"]}`,
-      {
-        method: "DELETE",
-      }
-    );
-
-    setDeleteFlag(await deleteRequest.json());
   };
 
   let icon_mapping = {
@@ -126,13 +132,50 @@ const Reactions = ({ contentID }) => {
     setReactionDetails(finalObject);
   };
 
+  
+  const addReaction = async (userData, reaction_id)=>{
+
+    if(!isCallQueued){
+      setIsCallQueued(true);
+      var deleteExistingReaction = false;
+      var deletingReactionID = '';
+      emojiReacted.map((data)=>{
+        if(data.content_id == userData.contentID){
+          deleteExistingReaction =  true;
+          deletingReactionID = data.user_content_reactions_id;
+        }
+      })
+      if(deleteExistingReaction){
+        await fetch(`https://artful-iudex.herokuapp.com/user_content_reactions/${deletingReactionID}`, {
+            method: "DELETE",
+        })
+        
+  
+      }
+        await fetch(`https://artful-iudex.herokuapp.com/user_content_reactions/`, {
+            method: "POST",
+            body: JSON.stringify({
+                user_id:parseInt(userData.userID),
+                reaction_id: parseInt(reaction_id),
+                content_id: parseInt(userData.contentID)
+            }),
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json"
+            },
+        })
+        
+        setAlteredFlag((prev)=> {return !prev})
+        setIsCallQueued(false);
+    
+    }
+
+    }
+
   useEffect(() => {
     getStuff();
 
-    fetch("https://artful-iudex.herokuapp.com/reactions")
-      .then((res) => res.json())
-      .then((response) => setEmojiList(response));
-  }, [deleteFlag, showSummary]);
+  }, [alteredFlag]);
   return (
     <div className="d-flex">
       {reactionDetails.map((eachContent, index) => {
@@ -144,18 +187,12 @@ const Reactions = ({ contentID }) => {
                   return (
                     <React.Fragment key={index1}>
                       <span
-                        onMouseEnter={(e) => summaryTrigger(e.target)}
+                        onMouseEnter={(e) =>{
+                          summaryTrigger(e.target, eachReaction.reaction_id)
+                        }}
                         
                         onClick={() =>
-                          deleteReaction(
-                            eachReaction["users"].includes(user_id)
-                              ? {
-                                  content_id: eachContent.contentID,
-                                  reaction_id: eachReaction.reaction_id,
-                                  current_user_id: user_id,
-                                }
-                              : null
-                          )
+                          addReaction(eachContent, eachReaction.reaction_id)
                         }
                         className={`selected-emoji ${
                           eachReaction["users"].includes(user_id)
@@ -163,8 +200,7 @@ const Reactions = ({ contentID }) => {
                             : ""
                         } `}
                       >
-                        {icon_mapping[eachReaction["reaction_id"]]}.
-                        {eachReaction["users"].length}
+                        {icon_mapping[eachReaction["reaction_id"]]} ∙ {eachReaction["users"].length}
                       </span>
                     </React.Fragment>
                   );
@@ -184,11 +220,11 @@ const Reactions = ({ contentID }) => {
                 <div className="reaction-trigger-outer">
                   <button className="reaction-trigger"></button>
                   <div className="emoji-buttons-container">
-                    <EmojiList emojiReacted={emojiReacted} setDeleteFlag={setDeleteFlag} />
+                    <EmojiList emojiReacted={emojiReacted} setAlteredFlag={setAlteredFlag} addReaction={addReaction}/>
                   </div>
                 </div>
               </div>
-              {showSummary && <SummaryModal />}
+              <SummaryModal summaryModalHighlighter={summaryModalHighlighter} />
             </UserDataContext.Provider>
           );
         }

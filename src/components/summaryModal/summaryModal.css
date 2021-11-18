@@ -70,6 +70,13 @@
 .reaction-types {
     position: relative;
 }
+
+.reacted-users-container {
+    
+     overflow-y: scroll;
+     height: 300px;
+}
+
 .emoji-buttons-container{
     position: absolute;
     top: -120%;
@@ -130,25 +137,9 @@
 .modal-body{
     padding: 0 ! important;
     margin : 10px;
-    overflow-y: scroll;
-    max-height: 300px;
+    /* overflow-y: scroll; */
 }
 
 .modal-dialog{
     transition: 100ms all ease-in;
-}
-
-.modal-content{
-    transition: 100ms all ease-in-out;
-}
-
-.modal-backdrop {
-    /* bug fix - no overlay */    
-    display: none;    
-}
-
-.modal{
-  /* bug fix - custom overlay */   
-  background-color: rgba(10,10,10,0.45);
-  z-index: 1000;
 }
